@@ -8,14 +8,13 @@ import Videos from "./pages/Videos";
 import AdminList from "./pages/AdminList";
 import Downloads from "./pages/Downloads";
 import Partners from "./pages/Partners";
-import "./App.css";
 
 function App() {
   return (
-    <div className="App min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col">
+    <div className="App">
       <BrowserRouter>
         <Navbar />
-        <main className="flex-1">
+        <main>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/videos" element={<Videos />} />
