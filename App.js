@@ -1,13 +1,13 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Toaster } from "./components/ui/toaster";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import Home from "./pages/Home";
-import Videos from "./pages/Videos";
-import AdminList from "./pages/AdminList";
-import Downloads from "./pages/Downloads";
-import Partners from "./pages/Partners";
+import { Toaster } from ".toaster";
+import Navbar from ".Navbar";
+import Footer from ".Footer";
+import Home from ".Home";
+import Videos from ".Videos";
+import AdminList from ".AdminList";
+import Downloads from ".Downloads";
+import Partners from ".Partners";
 
 function App() {
   return (
