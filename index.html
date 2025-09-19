@@ -1,12 +1,833 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FreeClients</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreeClients</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom right, #1e293b, #0f172a, #1e293b);
+      color: #e2e8f0;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: rgba(30, 41, 59, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #475569;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 2px 10px rgba(30, 41, 59, 0.2);
+    }
+
+    .navbar .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 4rem;
+    }
+
+    .navbar .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+
+    .navbar .logo span {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: linear-gradient(45deg, #22d3ee, #3b82f6);
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 10px rgba(34, 211, 238, 0.3);
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 1.25rem;
+    }
+
+    .navbar .logo h1 {
+      font-size: 1.25rem;
+      background: linear-gradient(90deg, #22d3ee, #3b82f6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: bold;
+    }
+
+    .navbar .nav-links {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .navbar .nav-links a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      color: #e2e8f0;
+      transition: all 0.3s ease;
+    }
+
+    .navbar .nav-links a:hover {
+      background: rgba(51, 65, 85, 0.5);
+      box-shadow: 0 0 10px rgba(34, 211, 238, 0.2);
+    }
+
+    .navbar .nav-links .active {
+      background: linear-gradient(90deg, #22d3ee, #3b82f6);
+      color: #ffffff;
+      box-shadow: 0 0 10px rgba(34, 211, 238, 0.3);
+    }
+
+    .navbar .discord-btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      background: linear-gradient(90deg, #16a34a, #10b981);
+      color: #ffffff;
+      border: none;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .navbar .discord-btn:hover {
+      background: linear-gradient(90deg, #15803d, #0f766e);
+      box-shadow: 0 0 15px rgba(22, 163, 74, 0.4);
+      transform: scale(1.05);
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      display: none;
+    }
+
+    .mobile-menu.active .nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 1rem;
+      background: rgba(30, 41, 59, 0.95);
+      border-left: 1px solid #475569;
+    }
+
+    .mobile-menu-btn {
+      background: none;
+      border: none;
+      color: #e2e8f0;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .mobile-menu-btn:hover {
+      color: #ffffff;
+    }
+
+    @media (max-width: 768px) {
+      .navbar .nav-links {
+        display: none;
+      }
+      .mobile-menu {
+        display: block;
+      }
+    }
+
+    /* Home Section */
+    .home {
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      padding: 5rem 1rem;
+    }
+
+    .home .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: linear-gradient(90deg, rgba(34, 211, 238, 0.2), rgba(59, 130, 246, 0.2));
+      color: #22d3ee;
+      border: 1px solid rgba(34, 211, 238, 0.3);
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      margin-bottom: 1.5rem;
+      display: block;
+      text-align: center;
+      max-width: 28rem;
+      margin: 0 auto;
+    }
+
+    .home h1 {
+      font-size: 4.5rem;
+      font-weight: bold;
+      background: linear-gradient(90deg, #ffffff, #94a3b8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .home p {
+      font-size: 1.5rem;
+      color: #94a3b8;
+      text-align: center;
+      max-width: 48rem;
+      margin: 0 auto 2rem;
+      line-height: 1.75;
+      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .home .buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      color: #ffffff;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .button.primary {
+      background: linear-gradient(90deg, #22d3ee, #3b82f6);
+      box-shadow: 0 0 10px rgba(34, 211, 238, 0.3);
+    }
+
+    .button.primary:hover {
+      background: linear-gradient(90deg, #0ea5e9, #2563eb);
+      box-shadow: 0 0 15px rgba(14, 165, 233, 0.4);
+      transform: scale(1.05);
+    }
+
+    .button.secondary {
+      border: 1px solid #64748b;
+      color: #e2e8f0;
+      background: transparent;
+    }
+
+    .button.secondary:hover {
+      background: #334155;
+      color: #ffffff;
+    }
+
+    /* Stats Section */
+    .stats {
+      padding: 4rem 1rem;
+      background: rgba(30, 41, 59, 0.5);
+      backdrop-filter: blur(5px);
+    }
+
+    .stats .grid {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+      gap: 1.5rem;
+    }
+
+    .stats .card {
+      background: rgba(51, 65, 85, 0.5);
+      border: 1px solid #475569;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .stats .card:hover {
+      background: rgba(51, 65, 85, 0.8);
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(34, 211, 238, 0.2);
+    }
+
+    .stats .card h3 {
+      font-size: 1.875rem;
+      font-weight: bold;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+    }
+
+    .stats .card p {
+      color: #94a3b8;
+      font-size: 0.875rem;
+    }
+
+    /* Features Section */
+    .features {
+      padding: 5rem 1rem;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .features h2 {
+      font-size: 3rem;
+      font-weight: bold;
+      background: linear-gradient(90deg, #ffffff, #94a3b8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-align: center;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .features p {
+      font-size: 1.25rem;
+      color: #94a3b8;
+      text-align: center;
+      max-width: 40rem;
+      margin: 0 auto 2rem;
+    }
+
+    .features .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+      gap: 2rem;
+    }
+
+    .features .card {
+      background: rgba(51, 65, 85, 0.3);
+      border: 1px solid #475569;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.5s ease;
+    }
+
+    .features .card:hover {
+      background: rgba(51, 65, 85, 0.5);
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(34, 211, 238, 0.2);
+    }
+
+    .features .card .icon {
+      width: 3rem;
+      height: 3rem;
+      background: linear-gradient(45deg, #22d3ee, #3b82f6);
+      border-radius: 0.5rem;
+      margin: 0 auto 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease;
+    }
+
+    .features .card:hover .icon {
+      transform: scale(1.1);
+    }
+
+    .features .card h3 {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .features .card:hover h3 {
+      color: #22d3ee;
+    }
+
+    .features .card p {
+      color: #94a3b8;
+      font-size: 0.875rem;
+    }
+
+    /* CTA Section */
+    .cta {
+      padding: 5rem 1rem;
+      max-width: 64rem;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .cta .card {
+      background: linear-gradient(90deg, rgba(51, 65, 85, 0.5), rgba(30, 41, 59, 0.5));
+      border: 1px solid #475569;
+      border-radius: 0.5rem;
+      padding: 3rem;
+      box-shadow: 0 0 20px rgba(34, 211, 238, 0.1);
+      backdrop-filter: blur(5px);
+    }
+
+    .cta h2 {
+      font-size: 2.25rem;
+      font-weight: bold;
+      color: #ffffff;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .cta p {
+      font-size: 1.25rem;
+      color: #94a3b8;
+      margin-bottom: 2rem;
+      max-width: 40rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Videos Section */
+    .videos {
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      padding: 2rem 1rem;
+    }
+
+    .videos h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      background: linear-gradient(90deg, #ffffff, #94a3b8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .videos p {
+      font-size: 1.25rem;
+      color: #94a3b8;
+      text-align: center;
+      max-width: 40rem;
+      margin: 0 auto 2rem;
+    }
+
+    .videos .filters {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+
+    .videos .filter-btn {
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid #64748b;
+      background: transparent;
+      color: #e2e8f0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .videos .filter-btn.active {
+      background: linear-gradient(90deg, #22d3ee, #3b82f6);
+      color: #ffffff;
+      box-shadow: 0 0 10px rgba(34, 211, 238, 0.3);
+    }
+
+    .videos .filter-btn:hover {
+      background: #334155;
+      color: #ffffff;
+    }
+
+    .videos .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+
+    .videos .video-card {
+      background: rgba(51, 65, 85, 0.3);
+      border: 1px solid #475569;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .videos .video-card:hover {
+      background: rgba(51, 65, 85, 0.5);
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(34, 211, 238, 0.2);
+    }
+
+    .videos .video-card img {
+      width: 100%;
+      height: 12rem;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .videos .video-card:hover img {
+      transform: scale(1.1);
+    }
+
+    .videos .video-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.2);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .videos .video-card:hover .video-overlay {
+      display: flex;
+    }
+
+    .videos .play-btn {
+      padding: 0.75rem 1.5rem;
+      background: #dc2626;
+      color: #ffffff;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .videos .play-btn:hover {
+      background: #b91c1c;
+      transform: scale(1.05);
+    }
+
+    .videos .video-info {
+      padding: 1rem;
+    }
+
+    .videos .video-title {
+      font-size: 1.125rem;
+      font-weight: bold;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .videos .video-card:hover .video-title {
+      color: #22d3ee;
+    }
+
+    .videos .video-desc {
+      color: #94a3b8;
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .videos .video-meta {
+      display: flex;
+      justify-content: space-between;
+      color: #94a3b8;
+      font-size: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .videos .video-action {
+      width: 100%;
+      padding: 0.5rem;
+      background: #334155;
+      color: #ffffff;
+      border: none;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .videos .video-action:hover {
+      background: #2d3d54;
+      box-shadow: 0 0 10px rgba(34, 211, 238, 0.2);
+    }
+
+    .videos .load-more {
+      display: block;
+      margin: 2rem auto;
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(90deg, #475569, #334155);
+      color: #ffffff;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .videos .load-more:hover {
+      background: linear-gradient(90deg, #3f4b5a, #2d3d54);
+      box-shadow: 0 0 15px rgba(34, 211, 238, 0.2);
+    }
+
+    /* Footer */
+    .footer {
+      background: rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid #475569;
+      padding: 1.5rem 0;
+      margin-top: 4rem;
+      text-align: center;
+    }
+
+    .footer p {
+      color: #94a3b8;
+      font-size: 0.875rem;
+    }
+
+    /* Particles */
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      animation: float 5s infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
-    <div id="root"></div>
-    <script src="App.js"></script>
+  <nav class="navbar">
+    <div class="container">
+      <a href="#home" class="logo">
+        <span>FC</span>
+        <h1>FreeClients</h1>
+      </a>
+      <div class="nav-links">
+        <a href="#home" class="active">Главная</a>
+        <a href="#videos">Видео</a>
+      </div>
+      <div class="mobile-menu">
+        <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+        <div class="nav-links" id="mobileNav"></div>
+      </div>
+      <a href="https://discord.gg/freeclients" target="_blank" rel="noopener noreferrer" class="discord-btn">
+        Присоединиться к Discord
+      </a>
+    </div>
+  </nav>
+
+  <section id="home" class="home">
+    <div class="badge">
+      <span>#1 Сообщество Minecraft клиентов</span>
+    </div>
+    <h1>FreeClients</h1>
+    <p>Идеальное место для премиум клиентов Minecraft. Присоединяйтесь к нашему сообществу и доминируйте в игре с необнаруживаемыми читами и эксклюзивными функциями.</p>
+    <div class="buttons">
+      <a href="https://discord.gg/freeclients" target="_blank" class="button primary">Присоединиться к Discord</a>
+      <a href="#" class="button secondary">Смотреть туториал</a>
+    </div>
+
+    <section class="stats">
+      <div class="grid">
+        <div class="card">
+          <h3>15K+</h3>
+          <p>Участников</p>
+        </div>
+        <div class="card">
+          <h3>50+</h3>
+          <p>Клиентов</p>
+        </div>
+        <div class="card">
+          <h3>24/7</h3>
+          <p>Поддержка</p>
+        </div>
+        <div class="card">
+          <h3>99%</h3>
+          <p>Время работы</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="features">
+      <h2>Почему выбирают FreeClients?</h2>
+      <p>Испытайте лучшие клиенты Minecraft с передовыми функциями и непревзойденной производительностью.</p>
+      <div class="grid">
+        <div class="card">
+          <div class="icon" style="background: linear-gradient(45deg, #22c55e, #34d399);"></div>
+          <h3>Необнаруживаемые клиенты</h3>
+          <p>Премиум обходы для всех основных античитовых систем</p>
+        </div>
+        <div class="card">
+          <div class="icon" style="background: linear-gradient(45deg, #3b82f6, #60a5fa);"></div>
+          <h3>Ежедневные обновления</h3>
+          <p>Регулярные обновления, чтобы оставаться впереди патчей</p>
+        </div>
+        <div class="card">
+          <div class="icon" style="background: linear-gradient(45deg, #9333ea, #c084fc);"></div>
+          <h3>VIP функции</h3>
+          <p>Эксклюзивные модули для премиум участников</p>
+        </div>
+        <div class="card">
+          <div class="icon" style="background: linear-gradient(45deg, #f97316, #fb923c);"></div>
+          <h3>Активное сообщество</h3>
+          <p>Присоединяйтесь к тысячам игроков, делящимся советами и трюками</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="card">
+        <h2>Готов доминировать?</h2>
+        <p>Присоединяйтесь к тысячам игроков, которые доверяют FreeClients для своих приключений в Minecraft. Получите мгновенный доступ к премиум клиентам и эксклюзивным функциям.</p>
+        <div class="buttons">
+          <a href="#" class="button primary">Скачать сейчас</a>
+          <a href="#" class="button secondary">Присоединиться к сообществу</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Particles -->
+    <div class="particle" style="top: 25%; left: 25%; width: 0.5rem; height: 0.5rem; background: #22d3ee; animation-delay: 0s;"></div>
+    <div class="particle" style="top: 33%; right: 33%; width: 0.25rem; height: 0.25rem; background: #3b82f6; animation-delay: 1s;"></div>
+    <div class="particle" style="bottom: 25%; left: 50%; width: 0.75rem; height: 0.75rem; background: #9333ea; animation-delay: 2s;"></div>
+  </section>
+
+  <section id="videos" class="videos">
+    <h1>Видео LoliPoop1k</h1>
+    <p>Смотрите последние туториалы, обзоры и советы от нашего избранного контент-создателя</p>
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterVideos('Все')">Все</button>
+      <button class="filter-btn" onclick="filterVideos('Туториалы')">Туториалы</button>
+      <button class="filter-btn" onclick="filterVideos('Обзоры')">Обзоры</button>
+      <button class="filter-btn" onclick="filterVideos('Обновления')">Обновления</button>
+      <button class="filter-btn" onclick="filterVideos('Советы')">Советы</button>
+    </div>
+
+    <div class="grid" id="videoGrid">
+      <!-- Example Videos -->
+      <div class="video-card">
+        <img src="https://via.placeholder.com/320x180" alt="Video 1">
+        <div class="video-overlay">
+          <button class="play-btn">Смотреть сейчас</button>
+        </div>
+        <div class="video-info">
+          <h3 class="video-title">Туториал по установке</h3>
+          <p class="video-desc">Узнайте, как установить клиент за 5 минут.</p>
+          <div class="video-meta">
+            <span>1.5К</span>
+            <span>12.09.2025</span>
+          </div>
+          <a href="#" class="video-action">Смотреть на YouTube</a>
+        </div>
+      </div>
+      <div class="video-card">
+        <img src="https://via.placeholder.com/320x180" alt="Video 2">
+        <div class="video-overlay">
+          <button class="play-btn">Смотреть сейчас</button>
+        </div>
+        <div class="video-info">
+          <h3 class="video-title">Обзор нового клиента</h3>
+          <p class="video-desc">Проверка новых функций за сентябрь 2025.</p>
+          <div class="video-meta">
+            <span>2К</span>
+            <span>10.09.2025</span>
+          </div>
+          <a href="#" class="video-action">Смотреть на YouTube</a>
+        </div>
+      </div>
+    </div>
+    <button class="load-more" onclick="loadMoreVideos()">Загрузить больше видео</button>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2025 FreeClients. Все права защищены.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile Menu
+    function toggleMenu() {
+      const mobileNav = document.getElementById('mobileNav');
+      mobileNav.classList.toggle('active');
+      if (mobileNav.classList.contains('active')) {
+        mobileNav.innerHTML = `
+          <a href="#home" class="active">Главная</a>
+          <a href="#videos">Видео</a>
+        `;
+      }
+    }
+
+    // Smooth Scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+        const mobileNav = document.getElementById('mobileNav');
+        if (mobileNav.classList.contains('active')) {
+          toggleMenu();
+        }
+      });
+    });
+
+    // Video Filtering (Simplified)
+    let videos = [
+      { title: "Туториал по установке", category: "Туториалы", views: 1500, date: "12.09.2025" },
+      { title: "Обзор нового клиента", category: "Обзоры", views: 2000, date: "10.09.2025" }
+    ];
+
+    function filterVideos(category) {
+      const buttons = document.querySelectorAll('.filter-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const grid = document.getElementById('videoGrid');
+      grid.innerHTML = '';
+      const filtered = category === 'Все' ? videos : videos.filter(v => v.category === category);
+      filtered.forEach(video => {
+        const card = document.createElement('div');
+        card.className = 'video-card';
+        card.innerHTML = `
+          <img src="https://via.placeholder.com/320x180" alt="${video.title}">
+          <div class="video-overlay">
+            <button class="play-btn">Смотреть сейчас</button>
+          </div>
+          <div class="video-info">
+            <h3 class="video-title">${video.title}</h3>
+            <p class="video-desc">Описание видео.</p>
+            <div class="video-meta">
+              <span>${video.views} просмотров</span>
+              <span>${video.date}</span>
+            </div>
+            <a href="#" class="video-action">Смотреть на YouTube</a>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Load More (Placeholder)
+    function loadMoreVideos() {
+      alert('Функция загрузки больше видео не реализована в этом примере.');
+    }
+
+    // Initial Load
+    window.onload = () => filterVideos('Все');
+  </script>
 </body>
 </html>
