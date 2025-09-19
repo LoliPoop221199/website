@@ -1,13 +1,5 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Toaster } from "./components/ui/toaster";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import Home from "./pages/Home";
-import Videos from "./pages/Videos";
-import AdminList from "./pages/AdminList";
-import Downloads from "./pages/Downloads";
-import Partners from "./pages/Partners";
 import "./App.css";
 
 function App() {
